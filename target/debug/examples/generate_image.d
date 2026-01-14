@@ -1,0 +1,1 @@
+/home/atram/temporal_graph/target/debug/examples/generate_image: /home/atram/temporal_graph/examples/generate_image.rs /home/atram/temporal_graph/src/enumeration.rs /home/atram/temporal_graph/src/lib.rs /home/atram/temporal_graph/src/minimization.rs /home/atram/temporal_graph/src/visualization.rs
