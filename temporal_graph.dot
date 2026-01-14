@@ -1,0 +1,11 @@
+strict graph temporal_graph {
+  node[shape=circle,style=filled,fillcolor=lightblue]
+  1
+  0
+  3
+  2
+  0 -- 3 [label="3"]
+  1 -- 2 [label="1, 2"]
+  2 -- 3 [label="2, 3"]
+  0 -- 1 [label="0, 1, 2"]
+}

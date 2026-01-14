@@ -1,0 +1,8 @@
+strict graph temporal_graph {
+  node[shape=circle]
+  2
+  3
+  0
+  1
+  0 -- 1
+}
