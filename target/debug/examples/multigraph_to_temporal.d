@@ -1,1 +1,0 @@
-/home/atram/temporal_graph/target/debug/examples/multigraph_to_temporal: /home/atram/temporal_graph/examples/multigraph_to_temporal.rs /home/atram/temporal_graph/src/enumeration.rs /home/atram/temporal_graph/src/lib.rs /home/atram/temporal_graph/src/minimization.rs /home/atram/temporal_graph/src/visualization.rs
