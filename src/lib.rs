@@ -27,9 +27,9 @@ impl TemporalEdge {
 
 #[derive(Debug)]
 pub struct TemporalGraph {
-    vertices: HashSet<VertexId>,
+    pub vertices: HashSet<VertexId>,
     // Map normalized (min, max) pairs to temporal edges for undirected edges
-    edges: HashMap<(VertexId, VertexId), TemporalEdge>,
+    pub edges: HashMap<(VertexId, VertexId), TemporalEdge>,
     vertex_labels: HashMap<VertexId, String>,
 }
 
@@ -417,3 +417,5 @@ pub use enumeration::{
     generate_multigraphs_nauty, generate_temporal_graphs_from_multigraphs,
     read_temporal_graphs_from_file,
 };
+pub mod connectivity;
+pub use connectivity::TemporalPathResult;
