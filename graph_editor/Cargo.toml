@@ -3,6 +3,10 @@ name = "graph_editor"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "graph_editor"
+path = "src/lib.rs"
+
 [[bin]]
 name = "graph_editor"
 path = "src/main.rs"
