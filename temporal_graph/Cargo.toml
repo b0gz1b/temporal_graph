@@ -1,0 +1,9 @@
+[package]
+name = "temporal_graph"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+graphviz-rust = "0.9"
+itertools = "0.13"
+rayon = "1.10"

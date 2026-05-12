@@ -1,0 +1,13 @@
+[package]
+name = "graph_editor"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "graph_editor"
+path = "src/main.rs"
+
+[dependencies]
+eframe = "0.31"
+egui = "0.31"
+temporal_graph = { path = "../temporal_graph" }
