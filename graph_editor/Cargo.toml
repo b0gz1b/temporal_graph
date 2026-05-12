@@ -7,6 +7,10 @@ edition = "2024"
 name = "graph_editor"
 path = "src/main.rs"
 
+[[example]]
+name = "graph_editor_demo"
+path = "examples/graph_editor_demo.rs"
+
 [dependencies]
 eframe = "0.31"
 egui = "0.31"
