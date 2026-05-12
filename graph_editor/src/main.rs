@@ -1,4 +1,4 @@
-mod app;
+pub mod app;
 
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions {

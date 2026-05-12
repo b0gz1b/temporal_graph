@@ -29,6 +29,40 @@ pub struct GraphEditorApp {
 }
 
 impl GraphEditorApp {
+    // ------------------------------------------------------------------
+    // Public API (used by examples and future integrations)
+    // ------------------------------------------------------------------
+
+    /// Insert a vertex at `pos` and return its assigned ID.
+    pub fn add_vertex(&mut self, pos: Pos2) -> usize {
+        let id = self.next_id;
+        self.vertices.push(Vertex { id, pos });
+        self.next_id += 1;
+        id
+    }
+
+    /// Insert an undirected edge between the vertices with IDs `from_id`
+    /// and `to_id`. No-op if either ID does not exist or the edge is
+    /// already present.
+    pub fn add_edge(&mut self, from_id: usize, to_id: usize) {
+        let from_exists = self.vertices.iter().any(|v| v.id == from_id);
+        let to_exists = self.vertices.iter().any(|v| v.id == to_id);
+        if !from_exists || !to_exists {
+            return;
+        }
+        let already_exists = self.edges.iter().any(|e| {
+            (e.from == from_id && e.to == to_id)
+                || (e.from == to_id && e.to == from_id)
+        });
+        if !already_exists {
+            self.edges.push(Edge { from: from_id, to: to_id });
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Private helpers
+    // ------------------------------------------------------------------
+
     /// Return the index in `self.vertices` of the vertex hit by `pos`, if any.
     fn hit_vertex(&self, pos: Pos2) -> Option<usize> {
         self.vertices.iter().position(|v| {
@@ -54,20 +88,13 @@ impl GraphEditorApp {
                     // Create an edge between sel_idx and hit_idx (avoid duplicates).
                     let from_id = self.vertices[sel_idx].id;
                     let to_id = self.vertices[hit_idx].id;
-                    let already_exists = self.edges.iter().any(|e| {
-                        (e.from == from_id && e.to == to_id)
-                            || (e.from == to_id && e.to == from_id)
-                    });
-                    if !already_exists {
-                        self.edges.push(Edge { from: from_id, to: to_id });
-                    }
+                    self.add_edge(from_id, to_id);
                     self.selected = None;
                 }
             }
         } else {
             // Empty space clicked — create a new vertex and deselect.
-            self.vertices.push(Vertex { id: self.next_id, pos });
-            self.next_id += 1;
+            self.add_vertex(pos);
             self.selected = None;
         }
     }
