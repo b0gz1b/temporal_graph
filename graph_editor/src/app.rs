@@ -98,6 +98,40 @@ impl GraphEditorApp {
             self.selected = None;
         }
     }
+
+    /// Handle a right-click at canvas position `pos`.
+    ///
+    /// - With a vertex selected + right-click on another vertex:
+    ///   delete all edges between the two vertices, keep both vertices.
+    /// - Right-click on a vertex with nothing selected:
+    ///   delete that vertex and all its incident edges.
+    /// - Right-click on empty space: no-op.
+    fn on_right_click(&mut self, pos: Pos2) {
+        let Some(hit_idx) = self.hit_vertex(pos) else {
+            return;
+        };
+        let hit_id = self.vertices[hit_idx].id;
+
+        match self.selected {
+            Some(sel_idx) if sel_idx != hit_idx => {
+                // Two distinct vertices involved — delete only the edges between them.
+                let sel_id = self.vertices[sel_idx].id;
+                self.edges.retain(|e| {
+                    !((e.from == sel_id && e.to == hit_id)
+                        || (e.from == hit_id && e.to == sel_id))
+                });
+                self.selected = None;
+            }
+            _ => {
+                // No selection (or right-clicked the selected vertex itself) —
+                // delete the vertex and all its incident edges.
+                self.edges.retain(|e| e.from != hit_id && e.to != hit_id);
+                self.vertices.remove(hit_idx);
+                // Fix up selected index: it may now point to the wrong slot.
+                self.selected = None;
+            }
+        }
+    }
 }
 
 impl eframe::App for GraphEditorApp {
@@ -114,6 +148,12 @@ impl eframe::App for GraphEditorApp {
                 if response.clicked() {
                     if let Some(pos) = response.interact_pointer_pos() {
                         self.on_click(pos);
+                    }
+                }
+
+                if response.secondary_clicked() {
+                    if let Some(pos) = response.interact_pointer_pos() {
+                        self.on_right_click(pos);
                     }
                 }
 
@@ -175,12 +215,12 @@ impl eframe::App for GraphEditorApp {
                 // ---- Status bar ----------------------------------------------------
                 let status = match self.selected {
                     None => format!(
-                        "{} vertices · {} edges — click to add a vertex",
+                        "{} vertices · {} edges  |  left-click: add/select  ·  right-click vertex: delete it",
                         self.vertices.len(),
                         self.edges.len()
                     ),
                     Some(idx) => format!(
-                        "Vertex {} selected — click another vertex to connect",
+                        "Vertex {} selected  |  left-click another: connect  ·  right-click another: delete edges between them",
                         self.vertices[idx].id
                     ),
                 };
